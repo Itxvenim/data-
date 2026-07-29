@@ -1,168 +1,74 @@
 <!DOCTYPE html>
-<html lang="en">
-
+<html>
 <head>
-
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-
-<title>Client Information System</title>
-
-<style>
-
-*{
-margin:0;
-padding:0;
-box-sizing:border-box;
-font-family:Arial, sans-serif;
-}
-
-body{
-
-background:#f2f5f9;
-padding:40px;
-
-}
-
-.container{
-
-width:90%;
-max-width:900px;
-margin:auto;
-background:white;
-padding:30px;
-border-radius:10px;
-box-shadow:0 0 15px rgba(0,0,0,.2);
-
-}
-
-h1{
-
-text-align:center;
-margin-bottom:30px;
-color:#0d6efd;
-
-}
-
-label{
-
-display:block;
-margin-top:15px;
-font-weight:bold;
-
-}
-
-input,
-textarea{
-
-width:100%;
-padding:12px;
-margin-top:5px;
-border:1px solid #ccc;
-border-radius:6px;
-font-size:15px;
-
-}
-
-textarea{
-
-height:90px;
-resize:none;
-
-}
-
-button{
-
-width:100%;
-padding:14px;
-margin-top:20px;
-background:#0d6efd;
-color:white;
-border:none;
-border-radius:6px;
-font-size:16px;
-cursor:pointer;
-
-}
-
-button:hover{
-
-background:#084298;
-
-}
-
-table{
-
-width:100%;
-margin-top:30px;
-border-collapse:collapse;
-
-}
-
-table th{
-
-background:#0d6efd;
-color:white;
-padding:12px;
-
-}
-
-table td{
-
-padding:10px;
-border:1px solid #ddd;
-text-align:center;
-
-}
-
-table tr:nth-child(even){
-
-background:#f8f8f8;
-
-}
-
-</style>
-
+<title>Client Information</title>
 </head>
-
 <body>
 
-<div class="container">
+<h2>Client Information</h2>
 
-<h1>Client Information System</h1>
+<input type="text" id="name" placeholder="Client Name"><br><br>
 
-<label>Client Name</label>
-<input type="text" id="name" placeholder="Enter Client Name">
+<input type="text" id="phone" placeholder="Phone Number"><br><br>
 
-<label>Phone Number</label>
-<input type="text" id="phone" placeholder="Enter Phone Number">
+<input type="email" id="email" placeholder="Email"><br><br>
 
-<label>Email</label>
-<input type="email" id="email" placeholder="Enter Email">
+<button onclick="saveClient()">Save</button>
 
-<label>Address</label>
-<textarea id="address" placeholder="Enter Address"></textarea>
+<h3>Saved Clients</h3>
 
-<button onclick="saveClient()">
-Save Client
-</button>
+<ul id="list"></ul>
 
-<h2 style="margin-top:40px;">Saved Clients</h2>
+<script>
 
-<table>
+let clients = JSON.parse(localStorage.getItem("clients")) || [];
 
-<thead>
+showClients();
 
-<tr>
+function saveClient(){
 
-<th>#</th>
-<th>Name</th>
-<th>Phone</th>
-<th>Email</th>
-<th>Address</th>
+let name = document.getElementById("name").value;
+let phone = document.getElementById("phone").value;
+let email = document.getElementById("email").value;
 
-</tr>
+if(name=="" || phone=="" || email==""){
+alert("Fill all fields");
+return;
+}
 
-</thead>
+clients.push({
+name:name,
+phone:phone,
+email:email
+});
 
-<tbody id="clientTable">
+localStorage.setItem("clients",JSON.stringify(clients));
+
+document.getElementById("name").value="";
+document.getElementById("phone").value="";
+document.getElementById("email").value="";
+
+showClients();
+
+}
+
+function showClients(){
+
+let list=document.getElementById("list");
+
+list.innerHTML="";
+
+clients=JSON.parse(localStorage.getItem("clients")) || [];
+
+for(let i=0;i<clients.length;i++){
+
+list.innerHTML += "<li><b>"+clients[i].name+"</b> | "+clients[i].phone+" | "+clients[i].email+"</li>";
+
+}
+
+}
+
+</script>
+
+</body>
+</html>
